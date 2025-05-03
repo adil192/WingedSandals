@@ -1,15 +1,15 @@
 package com.adilhanney.wingedsandals
 
+import com.adilhanney.wingedsandals.item.ModItems
 import net.fabricmc.api.ModInitializer
 import org.slf4j.LoggerFactory
 
 object WingedSandals : ModInitializer {
-    private val logger = LoggerFactory.getLogger("wingedsandals")
+  const val MOD_ID = "wingedsandals"
+  val logger = LoggerFactory.getLogger(MOD_ID)!!
 
-	override fun onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
-		logger.info("Hello Fabric world!")
-	}
+  override fun onInitialize() {
+    logger.info("Hello Fabric world!")
+    ModItems.registerItems()
+  }
 }
