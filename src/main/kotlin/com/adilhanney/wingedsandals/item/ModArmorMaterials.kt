@@ -18,7 +18,7 @@ object ModArmorMaterials {
   val wingedSandalsMaterial = registerWingedSandalsMaterial()
 
   private fun registerWingedSandalsMaterial() : RegistryEntry<ArmorMaterial> {
-    val id = Identifier.of(WingedSandals.MOD_ID, "winged_sandals_material")
+    val id = Identifier.of(WingedSandals.MOD_ID, "winged_sandals")
 
     val defense = Util.make(EnumMap<ArmorItem.Type, Int>(ArmorItem.Type::class.java), Consumer { map ->
       map.put(ArmorItem.Type.BOOTS, 1)
