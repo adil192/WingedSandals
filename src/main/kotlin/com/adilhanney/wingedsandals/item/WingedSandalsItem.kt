@@ -3,10 +3,13 @@ package com.adilhanney.wingedsandals.item
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.effect.StatusEffectInstance
+import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ArmorItem
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
+
 
 class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.wingedSandalsMaterial, Type.BOOTS, settings) {
 
@@ -42,8 +45,6 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
 
   /**
    * Sets the player's ability to fly based on whether they have the winged sandals equipped.
-   *
-   * If the player is flying and becomes incapable of flying, they are dropped out of the air.
    */
   fun setAllowFlying(player: PlayerEntity) {
     val isEquipped = player.getEquippedStack(EquipmentSlot.FEET).item == this
@@ -51,7 +52,34 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
 
     if (player.abilities.allowFlying == allowFlying) return
     player.abilities.allowFlying = allowFlying
-    if (!allowFlying) player.abilities.flying = false
+
+    if (!allowFlying && player.abilities.flying) {
+      player.abilities.flying = false
+      if (isHighUp(player)) {
+        addSlowFalling(player)
+      }
+    }
+
     player.sendAbilitiesUpdate()
+  }
+
+  /**
+   * @return Whether the 10 blocks below the player are all air
+   */
+  private fun isHighUp(player: PlayerEntity): Boolean {
+    val world = player.world
+    if (world == null) return false
+
+    val playerPos = player.blockPos
+    for (i in 0..10) {
+      val blockPos = playerPos.down(i)
+      val blockState = world.getBlockState(blockPos)
+      if (!blockState.isAir) return false
+    }
+    return true
+  }
+
+  private fun addSlowFalling(player: PlayerEntity) {
+    player.addStatusEffect(StatusEffectInstance(StatusEffects.SLOW_FALLING, 2 * 20))
   }
 }
