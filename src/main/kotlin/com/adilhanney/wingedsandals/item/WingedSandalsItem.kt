@@ -14,8 +14,7 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
   @Override
   override fun inventoryTick(stack: ItemStack?, world: World?, entity: Entity?, slot: Int, selected: Boolean) {
     if (entity is PlayerEntity) {
-      val isEquipped = entity.getEquippedStack(EquipmentSlot.FEET).item == this
-      setAllowFlying(entity, isEquipped || canNormallyFly(entity))
+      setAllowFlying(entity)
     }
     super.inventoryTick(stack, world, entity, slot, selected)
   }
@@ -23,7 +22,7 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
   @Override
   override fun onStoppedUsing(stack: ItemStack?, world: World?, user: LivingEntity?, remainingUseTicks: Int) {
     if (user is PlayerEntity) {
-      setAllowFlying(user, canNormallyFly(user))
+      setAllowFlying(user)
     }
     super.onStoppedUsing(stack, world, user, remainingUseTicks)
   }
@@ -31,7 +30,7 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
   @Override
   override fun finishUsing(stack: ItemStack?, world: World?, user: LivingEntity?): ItemStack? {
     if (user is PlayerEntity) {
-      setAllowFlying(user, canNormallyFly(user))
+      setAllowFlying(user)
     }
     return super.finishUsing(stack, world, user)
   }
@@ -43,11 +42,14 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
   }
 
   /**
-   * Sets the player's ability to fly.
+   * Sets the player's ability to fly based on whether they have the winged sandals equipped.
    *
-   * If [allowFlying] is false, the player will drop out of the air.
+   * If the player is flying and becomes incapable of flying, they are dropped out of the air.
    */
-  fun setAllowFlying(player: PlayerEntity, allowFlying: Boolean) {
+  fun setAllowFlying(player: PlayerEntity) {
+    val isEquipped = player.getEquippedStack(EquipmentSlot.FEET).item == this
+    val allowFlying = isEquipped || canNormallyFly(player)
+
     player.abilities.allowFlying = allowFlying
 
     if (!allowFlying) {
