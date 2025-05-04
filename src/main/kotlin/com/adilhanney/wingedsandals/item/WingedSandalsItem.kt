@@ -3,7 +3,6 @@ package com.adilhanney.wingedsandals.item
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ArmorItem
 import net.minecraft.item.ItemStack
@@ -50,21 +49,9 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
     val isEquipped = player.getEquippedStack(EquipmentSlot.FEET).item == this
     val allowFlying = isEquipped || canNormallyFly(player)
 
+    if (player.abilities.allowFlying == allowFlying) return
     player.abilities.allowFlying = allowFlying
-
-    if (!allowFlying) {
-      dropOutOfAir(player)
-    }
+    if (!allowFlying) player.abilities.flying = false
+    player.sendAbilitiesUpdate()
   }
-
-  private fun dropOutOfAir(player: PlayerEntity) {
-    if (player.isOnGround) return
-    if (player.isFallFlying) return // i.e. if they're using an elytra
-    if (player.isTouchingWater) return
-    if (player.hasStatusEffect(StatusEffects.LEVITATION)) return
-
-    // TODO: This doesn't work. Find out how to drop out of the air.
-    player.stopFallFlying()
-  }
-
 }
