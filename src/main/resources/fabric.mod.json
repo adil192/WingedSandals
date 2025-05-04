@@ -21,6 +21,12 @@
 				"value": "com.adilhanney.wingedsandals.WingedSandals",
 				"adapter": "kotlin"
 			}
+		],
+		"fabric-datagen": [
+			{
+				"value": "com.adilhanney.wingedsandals.WingedSandalsDataGenerator",
+				"adapter": "kotlin"
+			}
 		]
 	},
 	"mixins": [
