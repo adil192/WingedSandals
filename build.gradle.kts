@@ -1,16 +1,31 @@
 plugins {
-	id("fabric-loom") version "1.10-SNAPSHOT"
 	id("org.jetbrains.kotlin.jvm") version "2.1.20"
+	id("fabric-loom") version "1.10-SNAPSHOT"
 }
 
-val modVersion: String by project
-version = modVersion
-val mavenGroup: String by project
-group = mavenGroup
+version = property("mod.version")!!
+group = property("mod.group")!!
+
+val javaVersion = if (stonecutter.eval(stonecutter.current.version, ">=1.20.5"))
+	JavaVersion.VERSION_21 else JavaVersion.VERSION_17
 
 base {
-	val archivesBaseName: String by project
-	archivesName = archivesBaseName
+	archivesName = "${property("mod.id")}-${stonecutter.current.version}-fabric"
+}
+
+sourceSets.main {
+	java.srcDirs(
+		"../../src/main/java",
+		"../../src/main/kotlin",
+		"src/main/java",
+		"src/main/kotlin",
+	)
+	resources.srcDirs(
+		"../../src/main/generated",
+		"../../src/main/resources",
+		"src/main/generated",
+		"src/main/resources",
+	)
 }
 
 repositories {
@@ -28,25 +43,23 @@ fabricApi {
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
-	val minecraftVersion: String by project
-	val yarnMappings: String by project
-	val loaderVersion: String by project
-	val fabricApiVersion: String by project
-	val fabricKotlinVersion: String by project
-	minecraft("com.mojang:minecraft:${minecraftVersion}")
-	mappings("net.fabricmc:yarn:${yarnMappings}:v2")
-	modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
-	modImplementation("net.fabricmc:fabric-language-kotlin:${fabricKotlinVersion}")
+	minecraft("com.mojang:minecraft:${stonecutter.current.project}")
+	mappings("net.fabricmc:yarn:${property("deps.yarn_mappings")}:v2")
+	modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
+	modImplementation("net.fabricmc:fabric-language-kotlin:${property("deps.fabric_kotlin")}")
 }
 
 tasks {
 	processResources {
+		inputs.property("minecraft", stonecutter.current.version)
 		inputs.property("version", project.version)
 
 		filesMatching("fabric.mod.json") {
-			expand("version" to inputs.properties["version"])
+			expand(mapOf(
+				"minecraft" to inputs.properties["minecraft"],
+				"version" to inputs.properties["version"],
+			))
 		}
 	}
 
@@ -60,12 +73,16 @@ tasks {
 }
 
 tasks.withType<JavaCompile>().configureEach {
-	options.release.set(21)
+	options.release.set(javaVersion.majorVersion.toInt())
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
 	compilerOptions {
-		jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
+		jvmTarget = when (javaVersion) {
+			JavaVersion.VERSION_17 -> org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+			JavaVersion.VERSION_21 -> org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
+			else -> throw IllegalStateException("Unsupported Java version: $javaVersion")
+		}
 	}
 }
 
@@ -75,6 +92,13 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = javaVersion
+	targetCompatibility = javaVersion
+}
+
+loom {
+	runConfigs.all {
+		ideConfigGenerated(true) // Run configurations are not created for subprojects by default
+		runDir = "../../run" // Use a shared run folder and create separate worlds
+	}
 }

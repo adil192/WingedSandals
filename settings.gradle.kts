@@ -5,3 +5,14 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
+
+plugins {
+	id("dev.kikugie.stonecutter") version "0.6"
+}
+
+stonecutter {
+	create(rootProject) {
+		versions("1.20.1", "1.21.1", "1.21.4")
+		vcsVersion = "1.21.1"
+	}
+}
