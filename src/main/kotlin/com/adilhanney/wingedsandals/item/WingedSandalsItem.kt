@@ -1,19 +1,20 @@
 package com.adilhanney.wingedsandals.item
 
+import com.adilhanney.wingedsandals.WingedSandals
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EquipmentSlot
-import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.inventory.StackReference
 import net.minecraft.item.ArmorItem
 import net.minecraft.item.ItemStack
+import net.minecraft.screen.slot.Slot
+import net.minecraft.util.ClickType
 import net.minecraft.world.World
 
 
 class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.wingedSandalsMaterial, Type.BOOTS, settings) {
-
-  @Override
   override fun inventoryTick(stack: ItemStack?, world: World?, entity: Entity?, slot: Int, selected: Boolean) {
     if (entity is PlayerEntity) {
       setAllowFlying(entity)
@@ -21,20 +22,12 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
     super.inventoryTick(stack, world, entity, slot, selected)
   }
 
-  @Override
-  override fun onStoppedUsing(stack: ItemStack?, world: World?, user: LivingEntity?, remainingUseTicks: Int) {
-    if (user is PlayerEntity) {
-      setAllowFlying(user)
+  override fun onClicked(stack: ItemStack?, otherStack: ItemStack?, slot: Slot, clickType: ClickType?, player: PlayerEntity, cursorStackReference: StackReference?): Boolean {
+    if (slot.id == 8) {
+      // The player picked up the item from their boots slot
+      setAllowFlying(player, false)
     }
-    super.onStoppedUsing(stack, world, user, remainingUseTicks)
-  }
-
-  @Override
-  override fun finishUsing(stack: ItemStack?, world: World?, user: LivingEntity?): ItemStack? {
-    if (user is PlayerEntity) {
-      setAllowFlying(user)
-    }
-    return super.finishUsing(stack, world, user)
+    return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference)
   }
 
 
@@ -43,14 +36,19 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
     return player.isCreative || player.isSpectator
   }
 
-  /**
-   * Sets the player's ability to fly based on whether they have the winged sandals equipped.
-   */
+  /** Sets the player's ability to fly based on whether they have the winged sandals equipped. */
   fun setAllowFlying(player: PlayerEntity) {
-    val isEquipped = player.getEquippedStack(EquipmentSlot.FEET).item == this
+    val itemStack = player.getEquippedStack(EquipmentSlot.FEET)
+    val isEquipped = itemStack.item is WingedSandalsItem
+    setAllowFlying(player, isEquipped)
+  }
+
+  /** Sets the player's ability to fly based on whether they have the winged sandals equipped. */
+  fun setAllowFlying(player: PlayerEntity, isEquipped: Boolean) {
     val allowFlying = isEquipped || canNormallyFly(player)
 
     if (player.abilities.allowFlying == allowFlying) return
+    WingedSandals.logger.info("Setting allowFlying to $allowFlying")
     player.abilities.allowFlying = allowFlying
 
     if (!allowFlying && player.abilities.flying) {
@@ -79,7 +77,8 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
     return true
   }
 
-  private fun addSlowFalling(player: PlayerEntity) {
-    player.addStatusEffect(StatusEffectInstance(StatusEffects.SLOW_FALLING, 2 * 20))
+  private fun addSlowFalling(player: PlayerEntity): Boolean {
+    WingedSandals.logger.info("Adding slow falling")
+    return player.addStatusEffect(StatusEffectInstance(StatusEffects.SLOW_FALLING, 2 * 20))
   }
 }
