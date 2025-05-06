@@ -9,7 +9,7 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.StackReference
 import net.minecraft.item.ArmorItem
 import net.minecraft.item.ItemStack
-//? if >=1.21.4
+//? if >=1.21.2
 /*import net.minecraft.item.equipment.EquipmentType*/
 import net.minecraft.screen.slot.Slot
 import net.minecraft.util.ClickType
@@ -18,7 +18,7 @@ import net.minecraft.world.World
 
 class WingedSandalsItem(settings: Settings) : ArmorItem(
   ModArmorMaterials.wingedSandalsMaterial,
-  /*? if >=1.21.4 {*/ /*EquipmentType.BOOTS *//*?} else {*/ Type.BOOTS /*?}*/,
+  /*? if >=1.21.2 {*/ /*EquipmentType.BOOTS *//*?} else {*/ Type.BOOTS /*?}*/,
   settings,
 ) {
   override fun inventoryTick(stack: ItemStack?, world: World?, entity: Entity?, slot: Int, selected: Boolean) {

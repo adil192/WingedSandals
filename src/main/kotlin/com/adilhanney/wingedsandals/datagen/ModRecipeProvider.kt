@@ -11,6 +11,11 @@ import net.minecraft.recipe.book.RecipeCategory
 import java.util.concurrent.CompletableFuture
 import net.minecraft.data.recipe.RecipeExporter
 import net.minecraft.data.recipe.RecipeGenerator
+*///?} else if >=1.21.2 {
+/*import net.minecraft.registry.RegistryWrapper
+import java.util.concurrent.CompletableFuture
+import net.minecraft.data.server.recipe.RecipeExporter
+import net.minecraft.data.server.recipe.RecipeGenerator
 *///?} else if >=1.21 {
 /*import net.minecraft.data.server.recipe.RecipeExporter
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder
@@ -29,7 +34,7 @@ import java.util.function.Consumer
 class ModRecipeProvider(output: FabricDataOutput) : FabricRecipeProvider(output) {
 //?}
 
-  //? if >=1.21.4 {
+  //? if >=1.21.2 {
   /*override fun getRecipeGenerator(registries: RegistryWrapper.WrapperLookup, exporter: RecipeExporter): RecipeGenerator {
     return object : RecipeGenerator(registries, exporter) {
       override fun generate() {
@@ -53,6 +58,6 @@ class ModRecipeProvider(output: FabricDataOutput) : FabricRecipeProvider(output)
   }
   //?}
 
-  //? if >=1.21.4
+  //? if >=1.21.2
   /*override fun getName(): String = "WingedSandalsRecipeProvider"*/
 }

@@ -11,20 +11,18 @@ import net.minecraft.sound.SoundEvent
 import net.minecraft.util.Identifier
 import java.util.*
 
-//? if >=1.21.4 {
+//? if >=1.21.2 {
 /*import net.minecraft.item.equipment.ArmorMaterial
 import net.minecraft.item.equipment.ArmorMaterials
-import net.minecraft.item.equipment.EquipmentAssetKeys.REGISTRY_KEY
+//? if >=1.21.4
+/^import net.minecraft.item.equipment.EquipmentAssetKeys.REGISTRY_KEY^/
 import net.minecraft.item.equipment.EquipmentType
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.registry.tag.ItemTags
-
 *///?} else {
-
 import net.minecraft.item.ArmorMaterial
 import net.minecraft.item.ArmorMaterials
-
 //?}
 
 object ModArmorMaterials {
@@ -39,14 +37,13 @@ object ModArmorMaterials {
   //?}
 }
 
-//? if >=1.21.4 {
+//? if >=1.21.2 {
 /*class WingedSandalsArmorMaterial {
   companion object {
     private val gold = ArmorMaterials.GOLD
     private val netherite = ArmorMaterials.NETHERITE
 
     val id = Identifier.of(WingedSandals.MOD_ID, "winged_sandals")!!
-    val registryKey = RegistryKey.of(REGISTRY_KEY, id)!!
     val instance = ArmorMaterial(
       7,
       gold.defense,
@@ -55,7 +52,11 @@ object ModArmorMaterials {
       gold.toughness,
       netherite.knockbackResistance,
       ItemTags.REPAIRS_GOLD_ARMOR,
-      registryKey,
+      //? if >=1.21.4 {
+      /^RegistryKey.of(REGISTRY_KEY, id),
+      ^///?} else {
+      id,
+      //?}
     )
   }
 }

@@ -7,7 +7,7 @@ import net.minecraft.item.ArmorItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroups
 import net.minecraft.item.Items
-//? if >=1.21.4
+//? if >=1.21.2
 /*import net.minecraft.item.equipment.EquipmentType*/
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.RegistryKeys
@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier
 object ModItems {
   val wingedSandals = register("winged_sandals", ::WingedSandalsItem,
     Item.Settings()
-      //? if >=1.21.4 {
+      //? if >=1.21.2 {
       /*.maxDamage(EquipmentType.BOOTS.getMaxDamage(7))
       *///?} else if >=1.21 {
       /*.maxDamage(ArmorItem.Type.BOOTS.getMaxDamage(7))
@@ -27,7 +27,7 @@ object ModItems {
     val registryKey =
       RegistryKey.of(RegistryKeys.ITEM, Identifier.of(WingedSandals.MOD_ID, name))
 
-    //? if >=1.21.4 {
+    //? if >=1.21.2 {
     /*settings.registryKey(registryKey)
     return Items.register(registryKey, itemFactory, settings)
     *///?} else {
