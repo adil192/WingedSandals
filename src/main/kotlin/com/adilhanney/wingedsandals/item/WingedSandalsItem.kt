@@ -40,7 +40,7 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(ModArmorMaterials.winged
 
   /** @return Whether the player would be able to fly in vanilla minecraft */
   private fun canNormallyFly(player: PlayerEntity): Boolean {
-    return player.isInCreativeMode || player.isSpectator
+    return player.isCreative || player.isSpectator
   }
 
   /**

@@ -8,9 +8,21 @@ group = property("mod.group")!!
 
 val javaVersion = if (stonecutter.eval(stonecutter.current.version, ">=1.20.5"))
 	JavaVersion.VERSION_21 else JavaVersion.VERSION_17
+val mcVersionRangeForFabric = when (stonecutter.current.version) {
+	"1.20.1" -> "~1.20"
+	"1.21.1" -> ">=1.21 <1.21.2"
+	"1.21.4" -> ">=1.21.2 <1.22"
+	else -> "~${stonecutter.current.version}"
+}
+val mcVersionRangeForFileName = when (stonecutter.current.version) {
+	"1.20.1" -> "1.20.x"
+	"1.21.1" -> "1.21-1.21.1"
+	"1.21.4" -> "1.21.2-1.21.5"
+	else -> stonecutter.current.version
+}
 
 base {
-	archivesName = "${property("mod.id")}-${stonecutter.current.version}-fabric"
+	archivesName = "${property("mod.id")}-${mcVersionRangeForFileName}-fabric"
 }
 
 sourceSets.main {
@@ -49,11 +61,15 @@ dependencies {
 tasks {
 	processResources {
 		inputs.property("minecraft", stonecutter.current.version)
+		inputs.property("java", javaVersion.majorVersion)
+		inputs.property("minecraftVersionRange", mcVersionRangeForFabric)
 		inputs.property("version", project.version)
 
 		filesMatching("fabric.mod.json") {
 			expand(mapOf(
 				"minecraft" to inputs.properties["minecraft"],
+				"java" to inputs.properties["java"],
+				"minecraftVersionRange" to inputs.properties["minecraftVersionRange"],
 				"version" to inputs.properties["version"],
 			))
 		}

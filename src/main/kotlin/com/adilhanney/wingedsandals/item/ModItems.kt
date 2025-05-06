@@ -13,7 +13,9 @@ import net.minecraft.util.Identifier
 
 object ModItems {
   val wingedSandals = register("winged_sandals", ::WingedSandalsItem,
-    Item.Settings().maxDamage(ArmorItem.Type.BOOTS.getMaxDamage(7))
+    Item.Settings()
+      //? if >=1.21
+      /*.maxDamage(ArmorItem.Type.BOOTS.getMaxDamage(7))*/
   )
 
   private fun register(name: String?, itemFactory: (Item.Settings) -> Item, settings: Item.Settings): Item {
