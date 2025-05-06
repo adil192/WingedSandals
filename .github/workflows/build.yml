@@ -4,27 +4,48 @@
 # against bad commits.
 
 name: build
-on: [pull_request, push]
+on: [pull_request, push, workflow_dispatch]
 
 jobs:
-  build:
-    runs-on: ubuntu-24.04
+  find_versions:
+    runs-on: ubuntu-latest
+    outputs:
+      minecraftVersions: ${{ steps.find_versions.outputs.minecraftVersions }}
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
-      - name: validate gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4
-      - name: setup jdk
+      - name: find versions
+        id: find_versions
+        run: |
+          minecraftVersions=$(ls -1 versions | jq -R | jq -s -c)
+          echo "minecraftVersions=${minecraftVersions}" >> "$GITHUB_OUTPUT"
+
+  build:
+    strategy:
+      matrix:
+        minecraftVersion: ${{ fromJson(needs.find_versions.outputs.minecraftVersions) }}
+    runs-on: ubuntu-latest
+    needs: find_versions
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'microsoft'
-      - name: make gradle wrapper executable
-        run: chmod +x ./gradlew
-      - name: build
+
+      - name: Set Minecraft Version
+        run: ./gradlew "Set active project to ${{ matrix.minecraftVersion }}"
+
+      - name: Build
         run: ./gradlew build
-      - name: capture build artifacts
+
+      - name: Upload mod
         uses: actions/upload-artifact@v4
         with:
-          name: Artifacts
-          path: build/libs/
+          name: WingedSandals-${{ matrix.minecraftVersion }}
+          path: versions/${{ matrix.minecraftVersion }}/build/libs/
