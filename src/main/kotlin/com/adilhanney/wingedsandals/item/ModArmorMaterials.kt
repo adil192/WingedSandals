@@ -2,8 +2,6 @@ package com.adilhanney.wingedsandals.item
 
 import com.adilhanney.wingedsandals.WingedSandals
 import net.minecraft.item.ArmorItem
-import net.minecraft.item.ArmorMaterial
-import net.minecraft.item.ArmorMaterials
 import net.minecraft.item.Items
 import net.minecraft.recipe.Ingredient
 import net.minecraft.registry.Registries
@@ -13,10 +11,26 @@ import net.minecraft.sound.SoundEvent
 import net.minecraft.util.Identifier
 import java.util.*
 
+//? if >=1.21.4 {
+/*import net.minecraft.item.equipment.ArmorMaterial
+import net.minecraft.item.equipment.ArmorMaterials
+import net.minecraft.item.equipment.EquipmentAssetKeys.REGISTRY_KEY
+import net.minecraft.item.equipment.EquipmentType
+import net.minecraft.registry.RegistryKey
+import net.minecraft.registry.RegistryKeys
+import net.minecraft.registry.tag.ItemTags
+
+*///?} else {
+
+import net.minecraft.item.ArmorMaterial
+import net.minecraft.item.ArmorMaterials
+
+//?}
+
 object ModArmorMaterials {
   val wingedSandalsMaterial = register(WingedSandalsArmorMaterial.instance)
 
-  //? if >=1.21 {
+  //? if =1.21.1 {
   /*private fun register(armorMaterial: ArmorMaterial) : RegistryEntry<ArmorMaterial> {
     return Registry.registerReference(Registries.ARMOR_MATERIAL, WingedSandalsArmorMaterial.id, WingedSandalsArmorMaterial.instance)
   }
@@ -25,7 +39,27 @@ object ModArmorMaterials {
   //?}
 }
 
-//? if >=1.21 {
+//? if >=1.21.4 {
+/*class WingedSandalsArmorMaterial {
+  companion object {
+    private val gold = ArmorMaterials.GOLD
+    private val netherite = ArmorMaterials.NETHERITE
+
+    val id = Identifier.of(WingedSandals.MOD_ID, "winged_sandals")!!
+    val registryKey = RegistryKey.of(REGISTRY_KEY, id)!!
+    val instance = ArmorMaterial(
+      7,
+      gold.defense,
+      gold.enchantmentValue,
+      gold.equipSound,
+      gold.toughness,
+      netherite.knockbackResistance,
+      ItemTags.REPAIRS_GOLD_ARMOR,
+      registryKey,
+    )
+  }
+}
+*///?} else if >=1.21 {
 /*class WingedSandalsArmorMaterial {
   companion object {
     private val gold = ArmorMaterials.GOLD.value()
@@ -33,7 +67,7 @@ object ModArmorMaterials {
 
     val id = Identifier.of(WingedSandals.MOD_ID, "winged_sandals")!!
     val instance = ArmorMaterial(
-      EnumMap(ArmorItem.Type::class.java),
+      gold.defense,
       gold.enchantability,
       gold.equipSound,
       { Ingredient.ofItems(Items.GOLD_INGOT, ModItems.wingedSandals) },
