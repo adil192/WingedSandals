@@ -15,14 +15,10 @@ base {
 
 sourceSets.main {
 	java.srcDirs(
-		"../../src/main/java",
-		"../../src/main/kotlin",
 		"src/main/java",
 		"src/main/kotlin",
 	)
 	resources.srcDirs(
-		"../../src/main/generated",
-		"../../src/main/resources",
 		"src/main/generated",
 		"src/main/resources",
 	)
