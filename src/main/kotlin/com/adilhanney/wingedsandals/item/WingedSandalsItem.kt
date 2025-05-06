@@ -56,14 +56,7 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(
     if (player.abilities.allowFlying == allowFlying) return
     WingedSandals.logger.info("Setting allowFlying to $allowFlying")
     player.abilities.allowFlying = allowFlying
-
-    if (!allowFlying && player.abilities.flying) {
-      player.abilities.flying = false
-      if (isHighUp(player)) {
-        addSlowFalling(player)
-      }
-    }
-
+    if (!allowFlying) player.abilities.flying = false
     player.sendAbilitiesUpdate()
   }
 
@@ -81,10 +74,5 @@ class WingedSandalsItem(settings: Settings) : ArmorItem(
       if (!blockState.isAir) return false
     }
     return true
-  }
-
-  private fun addSlowFalling(player: PlayerEntity): Boolean {
-    WingedSandals.logger.info("Adding slow falling")
-    return player.addStatusEffect(StatusEffectInstance(StatusEffects.SLOW_FALLING, 2 * 20))
   }
 }
