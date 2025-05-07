@@ -12,10 +12,12 @@ import net.minecraft.item.Items
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.util.Identifier
+import net.minecraft.util.Rarity
 
 object ModItems {
   val wingedSandals = register("winged_sandals", ::WingedSandalsItem,
     Item.Settings()
+      .rarity(Rarity.UNCOMMON)
       //? if >=1.21.2 {
       /*.maxDamage(EquipmentType.BOOTS.getMaxDamage(7))
       *///?} else if >=1.21 {
