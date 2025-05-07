@@ -27,17 +27,6 @@ base {
 	archivesName = "${property("mod.id")}-${mcVersionRangeForFileName}-fabric"
 }
 
-sourceSets.main {
-	java.srcDirs(
-		"src/main/java",
-		"src/main/kotlin",
-	)
-	resources.srcDirs(
-		"src/main/generated",
-		"src/main/resources",
-	)
-}
-
 repositories {
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
