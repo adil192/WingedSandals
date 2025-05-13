@@ -3,9 +3,6 @@ plugins {
 	id("fabric-loom") version "1.10-SNAPSHOT"
 }
 
-version = property("mod.version")!!
-group = property("mod.group")!!
-
 val javaVersion = if (stonecutter.eval(stonecutter.current.version, ">=1.20.5"))
 	JavaVersion.VERSION_21 else JavaVersion.VERSION_17
 val mcVersionRangeForFabric = when (stonecutter.current.version) {
@@ -19,7 +16,7 @@ val mcVersionRangeForFabric = when (stonecutter.current.version) {
 }
 val mcVersionRangeForFileName = when (stonecutter.current.version) {
 	"1.20.1" -> "1.20-1.20.4"
-	"1.20.5" -> "1.20.5-1.20-6"
+	"1.20.5" -> "1.20.5-1.20.6"
 	"1.21.1" -> "1.21-1.21.1"
 	"1.21.2" -> "1.21.2-1.21.3"
 	"1.21.4" -> "1.21.4"
@@ -27,8 +24,11 @@ val mcVersionRangeForFileName = when (stonecutter.current.version) {
 	else -> stonecutter.current.version
 }
 
+version = "${property("mod.version")}+${mcVersionRangeForFileName}"
+group = property("mod.group")!!
+
 base {
-	archivesName = "${property("mod.id")}-${mcVersionRangeForFileName}-fabric"
+	archivesName = "${property("mod.id")}-fabric"
 }
 
 repositories {
