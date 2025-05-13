@@ -1,3 +1,7 @@
+# v1.0.2
+
+- Fixed support for all 1.20.x versions
+
 # v1.0.1
 
 - Fixed support for Minecraft 1.21.5
