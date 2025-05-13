@@ -1,6 +1,7 @@
 package com.adilhanney.wingedsandals.item
 
 import com.adilhanney.wingedsandals.WingedSandals
+//? if <1.21
 import net.minecraft.item.ArmorItem
 import net.minecraft.item.Items
 import net.minecraft.recipe.Ingredient

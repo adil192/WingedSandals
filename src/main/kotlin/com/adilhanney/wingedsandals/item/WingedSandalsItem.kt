@@ -7,26 +7,42 @@ import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.StackReference
+import net.minecraft.item.Item
+//? if <1.21.5
 import net.minecraft.item.ArmorItem
 import net.minecraft.item.ItemStack
 //? if >=1.21.2
 /*import net.minecraft.item.equipment.EquipmentType*/
 import net.minecraft.screen.slot.Slot
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.ClickType
 import net.minecraft.world.World
 
 
-class WingedSandalsItem(settings: Settings) : ArmorItem(
+//? if >=1.21.5 {
+/*class WingedSandalsItem(settings: Settings): Item(settings.armor(
+  ModArmorMaterials.wingedSandalsMaterial,
+  EquipmentType.BOOTS,
+)) {
+*///?} else {
+class WingedSandalsItem(settings: Settings) : ArmorItem (
   ModArmorMaterials.wingedSandalsMaterial,
   /*? if >=1.21.2 {*/ /*EquipmentType.BOOTS *//*?} else {*/ Type.BOOTS /*?}*/,
   settings,
 ) {
+//?}
+
+  //? if >=1.21.5 {
+  /*override fun inventoryTick(stack: ItemStack?, world: ServerWorld?, entity: Entity?, slot: EquipmentSlot?) {
+    if (entity is PlayerEntity) setAllowFlying(entity)
+    super.inventoryTick(stack, world, entity, slot)
+  }
+  *///?} else {
   override fun inventoryTick(stack: ItemStack?, world: World?, entity: Entity?, slot: Int, selected: Boolean) {
-    if (entity is PlayerEntity) {
-      setAllowFlying(entity)
-    }
+    if (entity is PlayerEntity) setAllowFlying(entity)
     super.inventoryTick(stack, world, entity, slot, selected)
   }
+  //?}
 
   override fun onClicked(stack: ItemStack?, otherStack: ItemStack?, slot: Slot, clickType: ClickType?, player: PlayerEntity, cursorStackReference: StackReference?): Boolean {
     if (slot.id == 8) {

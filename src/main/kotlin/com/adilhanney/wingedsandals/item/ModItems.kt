@@ -3,12 +3,13 @@ package com.adilhanney.wingedsandals.item
 import com.adilhanney.wingedsandals.WingedSandals
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents.ModifyEntries
-import net.minecraft.item.ArmorItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroups
 import net.minecraft.item.Items
 //? if >=1.21.2
 /*import net.minecraft.item.equipment.EquipmentType*/
+//? if <1.21.2
+import net.minecraft.item.ArmorItem
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.util.Identifier
