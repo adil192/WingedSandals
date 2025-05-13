@@ -68,7 +68,7 @@ jobs:
         if: matrix.minecraftVersion == '1.20.1'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: ForgetMeStick ${{ github.ref_name }} for Minecraft 1.20.x
+          name: WingedSandals ${{ github.ref_name }} for Minecraft 1.20.x
           changelog: ${{ steps.changelog.outputs.changelog }}
           files: |
             versions/${{ matrix.minecraftVersion }}/build/libs/*.jar
@@ -85,7 +85,7 @@ jobs:
         if: matrix.minecraftVersion == '1.21.1'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: ForgetMeStick ${{ github.ref_name }} for Minecraft 1.21-1.21.1
+          name: WingedSandals ${{ github.ref_name }} for Minecraft 1.21-1.21.1
           changelog: ${{ steps.changelog.outputs.changelog }}
           files: |
             versions/${{ matrix.minecraftVersion }}/build/libs/*.jar
@@ -102,7 +102,7 @@ jobs:
         if: matrix.minecraftVersion == '1.21.2'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: ForgetMeStick ${{ github.ref_name }} for Minecraft 1.21.2-1.21.3
+          name: WingedSandals ${{ github.ref_name }} for Minecraft 1.21.2-1.21.3
           changelog: ${{ steps.changelog.outputs.changelog }}
           files: |
             versions/${{ matrix.minecraftVersion }}/build/libs/*.jar
@@ -119,7 +119,7 @@ jobs:
         if: matrix.minecraftVersion == '1.21.4'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: ForgetMeStick ${{ github.ref_name }} for Minecraft 1.21.4
+          name: WingedSandals ${{ github.ref_name }} for Minecraft 1.21.4
           changelog: ${{ steps.changelog.outputs.changelog }}
           files: |
             versions/${{ matrix.minecraftVersion }}/build/libs/*.jar
@@ -136,7 +136,7 @@ jobs:
         if: matrix.minecraftVersion == '1.21.5'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: ForgetMeStick ${{ github.ref_name }} for Minecraft 1.21.5
+          name: WingedSandals ${{ github.ref_name }} for Minecraft 1.21.5
           changelog: ${{ steps.changelog.outputs.changelog }}
           files: |
             versions/${{ matrix.minecraftVersion }}/build/libs/*.jar
