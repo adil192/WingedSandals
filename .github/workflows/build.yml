@@ -24,6 +24,7 @@ jobs:
     strategy:
       matrix:
         minecraftVersion: ${{ fromJson(needs.find_versions.outputs.minecraftVersions) }}
+      fail-fast: false
     runs-on: ubuntu-latest
     needs: find_versions
     steps:
