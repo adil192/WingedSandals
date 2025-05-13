@@ -16,7 +16,7 @@ import net.minecraft.data.recipe.RecipeGenerator
 import java.util.concurrent.CompletableFuture
 import net.minecraft.data.server.recipe.RecipeExporter
 import net.minecraft.data.server.recipe.RecipeGenerator
-*///?} else if >=1.21 {
+*///?} else if >=1.20.5 {
 /*import net.minecraft.data.server.recipe.RecipeExporter
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder
 import net.minecraft.registry.RegistryWrapper
@@ -27,7 +27,7 @@ import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder
 import java.util.function.Consumer
 //?}
 
-//? if >=1.21 {
+//? if >=1.20.5 {
 /*class ModRecipeProvider(output: FabricDataOutput, registriesFuture: CompletableFuture<RegistryWrapper.WrapperLookup>) :
   FabricRecipeProvider(output, registriesFuture) {
 *///?} else {
@@ -48,7 +48,7 @@ class ModRecipeProvider(output: FabricDataOutput) : FabricRecipeProvider(output)
   }
   *///?} else {
   override fun generate(
-    exporter: /*? if >=1.21 {*/ /*RecipeExporter *//*?} else {*/ Consumer<RecipeJsonProvider> /*?}*/
+    exporter: /*? if >=1.20.5 {*/ /*RecipeExporter *//*?} else {*/ Consumer<RecipeJsonProvider> /*?}*/
   ) {
     ShapelessRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.wingedSandals)
       .input(Items.GOLDEN_BOOTS)

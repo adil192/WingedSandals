@@ -27,14 +27,14 @@ import net.minecraft.item.ArmorMaterials
 //?}
 
 object ModArmorMaterials {
-  val wingedSandalsMaterial = register(WingedSandalsArmorMaterial.instance)
+  val wingedSandalsMaterial = registerWingedSandalsMaterial()
 
-  //? if =1.21.1 {
-  /*private fun register(armorMaterial: ArmorMaterial) : RegistryEntry<ArmorMaterial> {
+  //? if >=1.20.5 && <=1.21.1 {
+  /*private fun registerWingedSandalsMaterial(): RegistryEntry<ArmorMaterial> {
     return Registry.registerReference(Registries.ARMOR_MATERIAL, WingedSandalsArmorMaterial.id, WingedSandalsArmorMaterial.instance)
   }
   *///?} else {
-  private fun register(armorMaterial: ArmorMaterial) : ArmorMaterial = armorMaterial
+  private fun registerWingedSandalsMaterial(): ArmorMaterial = armorMaterial
   //?}
 }
 
@@ -61,7 +61,7 @@ object ModArmorMaterials {
     )
   }
 }
-*///?} else if >=1.21 {
+*///?} else if >=1.20.5 {
 /*class WingedSandalsArmorMaterial {
   companion object {
     private val gold = ArmorMaterials.GOLD.value()
