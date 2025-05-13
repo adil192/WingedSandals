@@ -34,7 +34,7 @@ object ModArmorMaterials {
     return Registry.registerReference(Registries.ARMOR_MATERIAL, WingedSandalsArmorMaterial.id, WingedSandalsArmorMaterial.instance)
   }
   *///?} else {
-  private fun registerWingedSandalsMaterial(): ArmorMaterial = armorMaterial
+  private fun registerWingedSandalsMaterial(): ArmorMaterial = WingedSandalsArmorMaterial.instance
   //?}
 }
 
