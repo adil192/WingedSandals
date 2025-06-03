@@ -1,63 +1,43 @@
 package com.adilhanney.wingedsandals.datagen
 
 import com.adilhanney.wingedsandals.item.ModItems
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider
-import net.minecraft.item.Items
-import net.minecraft.recipe.book.RecipeCategory
-
-//? if >=1.21.4 {
-/*import net.minecraft.registry.RegistryWrapper
+import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
+import net.minecraft.data.recipes.RecipeCategory
+import net.minecraft.data.recipes.RecipeOutput
+import net.minecraft.data.recipes.RecipeProvider
+import net.minecraft.data.recipes.ShapelessRecipeBuilder
+import net.minecraft.world.item.Items
 import java.util.concurrent.CompletableFuture
-import net.minecraft.data.recipe.RecipeExporter
-import net.minecraft.data.recipe.RecipeGenerator
-*///?} else if >=1.21.2 {
-/*import net.minecraft.registry.RegistryWrapper
-import java.util.concurrent.CompletableFuture
-import net.minecraft.data.server.recipe.RecipeExporter
-import net.minecraft.data.server.recipe.RecipeGenerator
-*///?} else if >=1.20.5 {
-/*import net.minecraft.data.server.recipe.RecipeExporter
-import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder
-import net.minecraft.registry.RegistryWrapper
-import java.util.concurrent.CompletableFuture
-*///?} else {
-import net.minecraft.data.server.recipe.RecipeJsonProvider
-import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder
-import java.util.function.Consumer
-//?}
 
-//? if >=1.20.5 {
-/*class ModRecipeProvider(output: FabricDataOutput, registriesFuture: CompletableFuture<RegistryWrapper.WrapperLookup>) :
-  FabricRecipeProvider(output, registriesFuture) {
-*///?} else {
-class ModRecipeProvider(output: FabricDataOutput) : FabricRecipeProvider(output) {
-//?}
-
-  //? if >=1.21.2 {
-  /*override fun getRecipeGenerator(registries: RegistryWrapper.WrapperLookup, exporter: RecipeExporter): RecipeGenerator {
-    return object : RecipeGenerator(registries, exporter) {
-      override fun generate() {
-        createShapeless(RecipeCategory.COMBAT, ModItems.wingedSandals)
-          .input(Items.GOLDEN_BOOTS)
-          .input(Items.ELYTRA)
-          .criterion(hasItem(Items.ELYTRA), conditionsFromItem(Items.ELYTRA))
-          .offerTo(exporter)
-      }
-    }
+//? if >=1.21.2 {
+/*class ModRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) :
+  RecipeProvider(registries, output) {
+  override fun buildRecipes() {
+    shapeless(RecipeCategory.COMBAT, ModItems.wingedSandals.get())
+      .requires(Items.GOLDEN_BOOTS)
+      .requires(Items.ELYTRA)
+      .unlockedBy("has_elytra", has(Items.ELYTRA))
+      .save(output)
   }
-  *///?} else {
-  override fun generate(
-    exporter: /*? if >=1.20.5 {*/ /*RecipeExporter *//*?} else {*/ Consumer<RecipeJsonProvider> /*?}*/
-  ) {
-    ShapelessRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.wingedSandals)
-      .input(Items.GOLDEN_BOOTS)
-      .input(Items.ELYTRA)
-      .criterion(hasItem(Items.ELYTRA), conditionsFromItem(Items.ELYTRA))
-      .offerTo(exporter)
-  }
-  //?}
 
-  //? if >=1.21.2
-  /*override fun getName(): String = "WingedSandalsRecipeProvider"*/
+  class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) :
+    RecipeProvider.Runner(packOutput, registries) {
+    override fun createRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) =
+      ModRecipeProvider(registries, output)
+
+    override fun getName() = "WingedSandalsModRecipeProvider"
+  }
 }
+*///?} else {
+class ModRecipeProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) :
+  RecipeProvider(output, registries) {
+  override fun buildRecipes(recipeOutput: RecipeOutput) {
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, ModItems.wingedSandals.get())
+      .requires(Items.GOLDEN_BOOTS)
+      .requires(Items.ELYTRA)
+      .unlockedBy("has_elytra", has(Items.ELYTRA))
+      .save(recipeOutput)
+  }
+}
+//?}

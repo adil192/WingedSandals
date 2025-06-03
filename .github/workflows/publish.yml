@@ -1,4 +1,4 @@
-name: publish
+name: Publish
 on:
   workflow_dispatch:
   push:
@@ -64,23 +64,6 @@ jobs:
             echo "EOF"
           } >> $GITHUB_OUTPUT
 
-      - name: publish 1.20.x
-        if: matrix.minecraftVersion == '1.20.1'
-        uses: Kir-Antipov/mc-publish@v3.3
-        with:
-          name: WingedSandals ${{ github.ref_name }} for Minecraft 1.20.x
-          changelog: ${{ steps.changelog.outputs.changelog }}
-          files: |
-            versions/${{ matrix.minecraftVersion }}/build/libs/*.jar
-          game-versions: |
-            >=1.20 <1.21
-          java: |
-            17
-          modrinth-id: ${{ env.MODRINTH_ID }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-id: ${{ env.CURSEFORGE_ID }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-
       - name: publish 1.21-1.21.1
         if: matrix.minecraftVersion == '1.21.1'
         uses: Kir-Antipov/mc-publish@v3.3
@@ -99,7 +82,7 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
       - name: publish 1.21.2-1.21.3
-        if: matrix.minecraftVersion == '1.21.2'
+        if: matrix.minecraftVersion == '1.21.3'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           name: WingedSandals ${{ github.ref_name }} for Minecraft 1.21.2-1.21.3

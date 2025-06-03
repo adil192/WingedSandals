@@ -1,49 +1,42 @@
 package com.adilhanney.wingedsandals.item
 
 import com.adilhanney.wingedsandals.WingedSandals
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents.ModifyEntries
-import net.minecraft.item.Item
-import net.minecraft.item.ItemGroups
-import net.minecraft.item.Items
-//? if >=1.21.2
-/*import net.minecraft.item.equipment.EquipmentType*/
 //? if <1.21.2
-import net.minecraft.item.ArmorItem
-import net.minecraft.registry.RegistryKey
-import net.minecraft.registry.RegistryKeys
-import net.minecraft.util.Identifier
-import net.minecraft.util.Rarity
+import net.minecraft.world.item.ArmorItem
+import net.minecraft.world.item.CreativeModeTabs
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.Rarity
+//? if >=1.21.2
+/*import net.minecraft.world.item.equipment.ArmorType*/
+import net.neoforged.bus.api.IEventBus
+import net.neoforged.neoforge.common.NeoForge
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
+import net.neoforged.neoforge.registries.DeferredItem
+import net.neoforged.neoforge.registries.DeferredRegister
 
 object ModItems {
-  val wingedSandals = register("winged_sandals", ::WingedSandalsItem,
-    Item.Settings()
-      .rarity(Rarity.UNCOMMON)
+  private val ITEMS = DeferredRegister.createItems(WingedSandals.MODID)
+
+  val wingedSandals: DeferredItem<WingedSandalsItem> = ITEMS.registerItem("winged_sandals", ::WingedSandalsItem,
+    Item.Properties()
+      .rarity(Rarity.COMMON)
       //? if >=1.21.2 {
-      /*.maxDamage(EquipmentType.BOOTS.getMaxDamage(7))
+      /*.durability(ArmorType.BOOTS.getDurability(7))
       *///?} else if >=1.21 {
-      /*.maxDamage(ArmorItem.Type.BOOTS.getMaxDamage(7))
-      *///?}
+      .durability(ArmorItem.Type.BOOTS.getDurability(7))
+      //?}
   )
 
-  private fun register(name: String?, itemFactory: (Item.Settings) -> Item, settings: Item.Settings): Item {
-    val registryKey =
-      RegistryKey.of(RegistryKeys.ITEM, Identifier.of(WingedSandals.MOD_ID, name))
+  fun register(modEventBus: IEventBus) {
+    ITEMS.register(modEventBus)
 
-    //? if >=1.21.2 {
-    /*settings.registryKey(registryKey)
-    return Items.register(registryKey, itemFactory, settings)
-    *///?} else {
-    return Items.register(registryKey, itemFactory(settings))
-    //?}
+    modEventBus.addListener<BuildCreativeModeTabContentsEvent> { event -> this.addCreative(event) }
+
+    NeoForge.EVENT_BUS.addListener(WingedSandalsItem::onBootsChanged)
   }
 
-  fun registerItems() {
-    WingedSandals.logger.info("Registering Items for " + WingedSandals.MOD_ID)
-
-    ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(ModifyEntries { entries ->
-      entries.add(wingedSandals)
-    })
-
+  private fun addCreative(event: BuildCreativeModeTabContentsEvent) {
+    if (event.tabKey == CreativeModeTabs.COMBAT)
+        event.accept(wingedSandals)
   }
 }
