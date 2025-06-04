@@ -46,7 +46,7 @@ jobs:
         run: ./gradlew "Set active project to ${{ matrix.minecraftVersion }}"
 
       - name: Build
-        run: ./gradlew clean build
+        run: ./gradlew clean :${{ matrix.minecraftVersion }}:build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
