@@ -1,6 +1,10 @@
+# v1.0.4
+
+- Increased support for older NeoForge versions
+
 # v1.0.3
 
-- Ported to Neoforge
+- Ported to NeoForge
 
 # v1.0.2
 
