@@ -1,3 +1,8 @@
+# v1.0.5
+
+- (Fabric) Fixed the player still being able to fly after the winged sandals break
+- Better logs on the server
+
 # v1.0.4
 
 - Increased support for older NeoForge versions
