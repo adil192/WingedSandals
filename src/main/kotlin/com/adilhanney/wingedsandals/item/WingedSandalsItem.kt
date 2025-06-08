@@ -75,9 +75,14 @@ class WingedSandalsItem(properties: Properties) : ArmorItem(
 
       val attribute = player.getAttribute(NeoForgeMod.CREATIVE_FLIGHT)
       if (attribute == null) return
-
       if (attribute.baseValue == allowFlyingDouble) return
-      WingedSandals.LOGGER.info("Setting allowFlying to $allowFlying")
+
+      if (allowFlying) {
+        WingedSandals.LOGGER.info("${player.name.string} can now fly with their winged sandals!")
+      } else {
+        WingedSandals.LOGGER.info("${player.name.string} can no longer fly!")
+      }
+
       attribute.baseValue = allowFlyingDouble
       if (!allowFlying) player.abilities.flying = false
       player.onUpdateAbilities()
