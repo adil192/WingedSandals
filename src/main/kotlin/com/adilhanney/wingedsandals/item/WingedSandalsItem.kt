@@ -6,7 +6,6 @@ import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.inventory.StackReference
 import net.minecraft.item.Item
 //? if <1.21.5
 import net.minecraft.item.ArmorItem
@@ -44,51 +43,28 @@ class WingedSandalsItem(settings: Settings) : ArmorItem (
   }
   //?}
 
-  override fun onClicked(stack: ItemStack?, otherStack: ItemStack?, slot: Slot, clickType: ClickType?, player: PlayerEntity, cursorStackReference: StackReference?): Boolean {
-    if (slot.id == 8) {
-      // The player picked up the item from their boots slot
-      setAllowFlying(player, false)
+  companion object {
+    /** @return Whether the player would be able to fly in vanilla minecraft */
+    private fun canNormallyFly(player: PlayerEntity): Boolean {
+      return player.isCreative || player.isSpectator
     }
-    return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference)
-  }
 
-
-  /** @return Whether the player would be able to fly in vanilla minecraft */
-  private fun canNormallyFly(player: PlayerEntity): Boolean {
-    return player.isCreative || player.isSpectator
-  }
-
-  /** Sets the player's ability to fly based on whether they have the winged sandals equipped. */
-  fun setAllowFlying(player: PlayerEntity) {
-    val itemStack = player.getEquippedStack(EquipmentSlot.FEET)
-    val isEquipped = itemStack.item is WingedSandalsItem
-    setAllowFlying(player, isEquipped)
-  }
-
-  /** Sets the player's ability to fly based on whether they have the winged sandals equipped. */
-  fun setAllowFlying(player: PlayerEntity, isEquipped: Boolean) {
-    val allowFlying = isEquipped || canNormallyFly(player)
-
-    if (player.abilities.allowFlying == allowFlying) return
-    WingedSandals.logger.info("Setting allowFlying to $allowFlying")
-    player.abilities.allowFlying = allowFlying
-    if (!allowFlying) player.abilities.flying = false
-    player.sendAbilitiesUpdate()
-  }
-
-  /**
-   * @return Whether the 10 blocks below the player are all air
-   */
-  private fun isHighUp(player: PlayerEntity): Boolean {
-    val world = player.world
-    if (world == null) return false
-
-    val playerPos = player.blockPos
-    for (i in 0..10) {
-      val blockPos = playerPos.down(i)
-      val blockState = world.getBlockState(blockPos)
-      if (!blockState.isAir) return false
+    /** Sets the player's ability to fly based on whether they have the winged sandals equipped. */
+    fun setAllowFlying(player: PlayerEntity) {
+      val itemStack = player.getEquippedStack(EquipmentSlot.FEET)
+      val isEquipped = itemStack.item is WingedSandalsItem
+      setAllowFlying(player, isEquipped)
     }
-    return true
+
+    /** Sets the player's ability to fly based on whether they have the winged sandals equipped. */
+    fun setAllowFlying(player: PlayerEntity, isEquipped: Boolean) {
+      val allowFlying = isEquipped || canNormallyFly(player)
+
+      if (player.abilities.allowFlying == allowFlying) return
+      WingedSandals.logger.info("Setting allowFlying to $allowFlying")
+      player.abilities.allowFlying = allowFlying
+      if (!allowFlying) player.abilities.flying = false
+      player.sendAbilitiesUpdate()
+    }
   }
 }

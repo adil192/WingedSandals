@@ -1,6 +1,7 @@
 package com.adilhanney.wingedsandals.item
 
 import com.adilhanney.wingedsandals.WingedSandals
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents.ModifyEntries
 import net.minecraft.item.Item
@@ -45,5 +46,10 @@ object ModItems {
       entries.add(wingedSandals)
     })
 
+    ServerTickEvents.END_SERVER_TICK.register {
+      for (player in it.playerManager.playerList) {
+        WingedSandalsItem.setAllowFlying(player)
+      }
+    }
   }
 }
