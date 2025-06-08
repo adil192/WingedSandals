@@ -59,9 +59,14 @@ class WingedSandalsItem(settings: Settings) : ArmorItem (
     /** Sets the player's ability to fly based on whether they have the winged sandals equipped. */
     fun setAllowFlying(player: PlayerEntity, isEquipped: Boolean) {
       val allowFlying = isEquipped || canNormallyFly(player)
-
       if (player.abilities.allowFlying == allowFlying) return
-      WingedSandals.logger.info("Setting allowFlying to $allowFlying")
+
+      if (allowFlying) {
+        WingedSandals.logger.info("${player.name.string} can now fly with their winged sandals!")
+      } else {
+        WingedSandals.logger.info("${player.name.string} can no longer fly!")
+      }
+
       player.abilities.allowFlying = allowFlying
       if (!allowFlying) player.abilities.flying = false
       player.sendAbilitiesUpdate()
